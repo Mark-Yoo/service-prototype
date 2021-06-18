@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 import { Header, Logo, Menu, MenuItem, MenuToggle } from './styles';
-import { Link, Route } from 'react-router-dom';
-
-import ServicePage from '../../pages/servicepage';
+import { Link } from 'react-router-dom';
 
 const CommonHeader = () => {
   const onClickSpreadMenu = useCallback(() => {}, []);
+
   return (
     <>
       <Header>
@@ -15,7 +14,7 @@ const CommonHeader = () => {
             <Link to="/">서비스</Link>
           </MenuItem>
           <MenuItem>
-            <Link to="/">로그인</Link>
+            <Link to="/login">로그인</Link>
           </MenuItem>
           <MenuItem>
             <Link to="/sign-up">회원가입</Link>
@@ -23,9 +22,6 @@ const CommonHeader = () => {
         </Menu>
         <MenuToggle onClick={onClickSpreadMenu} />
       </Header>
-      <Route path="/" component={ServicePage} />
-      <Route path="/login" component={ServicePage} />
-      <Route path="/sign-up" component={ServicePage} />
     </>
   );
 };
