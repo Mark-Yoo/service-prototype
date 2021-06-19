@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useInput } from '../../hooks/useInput';
 import { emailRegex, passwordRegex } from '../../service/RegEx';
+import { useDispatch } from 'react-redux';
 import {
   SignupForm,
   Input,
@@ -10,6 +11,7 @@ import {
   ErrorAlert,
   FormWrapper,
 } from './styles';
+import { getTokenSignUp } from '../../modules/postInfo';
 
 const SignUp = () => {
   const [email, onChangeEmail] = useInput('');
@@ -20,6 +22,8 @@ const SignUp = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [passwordAlert, setPasswordAlert] = useState(false);
   const [passwordCheckAlert, setPasswordCheckAlert] = useState(false);
+  const emailInput = useRef();
+  const dispatch = useDispatch();
 
   const onValidateEmail = useCallback(() => {
     if (!emailRegex.test(email)) {
@@ -40,13 +44,35 @@ const SignUp = () => {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      if (passwordError) setPasswordAlert(true);
+      if (emailError) {
+        emailInput.current.focus();
+        return;
+      }
+      if (passwordError) {
+        setPasswordAlert(true);
+        return;
+      }
       if (password !== passwordCheck) {
         setPasswordCheckAlert(true);
         return;
       }
+      dispatch(
+        getTokenSignUp({
+          email: email,
+          password: password,
+          mobile: phoneNumber,
+        }),
+      );
     },
-    [password, passwordCheck, passwordError],
+    [
+      password,
+      passwordCheck,
+      passwordError,
+      emailError,
+      phoneNumber,
+      dispatch,
+      email,
+    ],
   );
 
   useEffect(() => {
@@ -57,7 +83,7 @@ const SignUp = () => {
     <FormWrapper>
       <SignupForm onSubmit={onSubmit}>
         <InputWrapper>
-          <Label htmlFor="user-email-">이메일</Label>
+          <Label htmlFor="user-email">이메일</Label>
           <Input
             name="user-email"
             type="email"
@@ -66,6 +92,7 @@ const SignUp = () => {
             onBlur={onValidateEmail}
             required
             emailError={emailError}
+            ref={emailInput}
           />
         </InputWrapper>
         <InputWrapper>
