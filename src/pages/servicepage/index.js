@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Card from '../../components/Card';
 import { CardWrapper } from './styles';
 
@@ -11,4 +11,4 @@ const ServicePage = () => {
   );
 };
 
-export default ServicePage;
+export default memo(ServicePage);
