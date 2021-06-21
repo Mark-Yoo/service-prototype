@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, memo } from 'react';
 import { Header, Logo, Menu, MenuItem, MenuToggle } from './styles';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -102,4 +102,4 @@ const CommonHeader = () => {
   );
 };
 
-export default CommonHeader;
+export default memo(CommonHeader);

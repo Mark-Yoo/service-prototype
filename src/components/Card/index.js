@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { ItemCard, ItemImg, ItemOrderBtn } from './styles';
 
@@ -25,4 +25,4 @@ const Card = ({ token }) => {
   );
 };
 
-export default Card;
+export default memo(Card);
