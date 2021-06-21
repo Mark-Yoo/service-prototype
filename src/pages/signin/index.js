@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, memo } from 'react';
 import {
   LoginInput,
   LoginForm,
@@ -24,6 +24,10 @@ const SignIn = () => {
     },
     [email, password, dispatch],
   );
+
+  useEffect(() => {
+    if (statusCode === 401) alert('비밀번호를 확인해주세요');
+  }, [statusCode]);
 
   return (
     <>
@@ -56,9 +60,9 @@ const SignIn = () => {
           </BtnWrapper>
         </LoginForm>
       </FormWrapper>
-      {statusCode === 401 && <alert>비밀번호를 확인해주세요</alert>}
+      {statusCode === 401 && <div>비밀번호를 확인해주세요</div>}
     </>
   );
 };
 
-export default SignIn;
+export default memo(SignIn);

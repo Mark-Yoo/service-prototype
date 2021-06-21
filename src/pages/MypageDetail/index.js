@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrderDetailItem } from '../../modules/getOrder';
 import { Item } from '../Mypage/styles';
@@ -32,4 +32,4 @@ const MypageDetail = ({ match, history }) => {
   );
 };
 
-export default MypageDetail;
+export default memo(MypageDetail);

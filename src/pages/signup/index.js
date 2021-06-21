@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef, memo } from 'react';
 import { useInput } from '../../hooks/useInput';
 import { emailRegex, passwordRegex } from '../../service/RegEx';
 import { useDispatch } from 'react-redux';
@@ -137,4 +137,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default memo(SignUp);
