@@ -8,6 +8,7 @@ import { deleteOrderItem } from '../../modules/getOrder';
 const CommonHeader = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
+  const [activeBtn, setActiveBtn] = useState(null);
   const { token } = useSelector((state) => state.postInfo);
   const dispatch = useDispatch();
 
@@ -18,9 +19,17 @@ const CommonHeader = () => {
   }, [showMenu]);
 
   // 해상도가 414px보다 높을 때에는 메뉴를 클릭해도 메뉴화면이 커지는 것을 막기 위해 기능 분리
-  const onClickCollapseMenuByWidth = useCallback(() => {
-    if (showMenu && screenWidth < 414) setShowMenu(false);
-  }, [showMenu, screenWidth]);
+  const onClickCollapseMenuByWidth = useCallback(
+    (e) => {
+      if (!token && e.target.className === 'mypage-link')
+        setActiveBtn('login-link');
+      else if (!token && e.target.className !== 'mypage-link')
+        setActiveBtn(e.target.className);
+      if (token) setActiveBtn(e.target.className);
+      if (showMenu && screenWidth < 414) setShowMenu(false);
+    },
+    [showMenu, screenWidth, token],
+  );
 
   const onClickSignOut = useCallback(() => {
     dispatch(deleteTokenSignOut());
@@ -54,16 +63,17 @@ const CommonHeader = () => {
           <Logo />
         </Link>
         <Menu showMenu={showMenu} onClick={onClickCollapseMenuByWidth}>
-          <MenuItem>
+          <MenuItem activeBtn={activeBtn} className="mypage-link">
             <Link
               to="/mypage/order"
               onClick={onClickCheckToken}
-              style={{ textDecoration: 'none', color: 'black' }}
+              className="mypage-link"
+              style={{ textDecoration: 'none' }}
             >
               마이페이지
             </Link>
           </MenuItem>
-          <MenuItem>
+          <MenuItem activeBtn={activeBtn} className="login-link">
             {/* 토큰을 받아왔을 경우 로그아웃으로 변경 */}
             {token ? (
               <Link
@@ -76,20 +86,22 @@ const CommonHeader = () => {
             ) : (
               <Link
                 to="/login"
-                style={{ textDecoration: 'none', color: 'black' }}
+                className="login-link"
+                style={{ textDecoration: 'none' }}
               >
                 로그인
               </Link>
             )}
           </MenuItem>
-          <MenuItem>
+          <MenuItem activeBtn={activeBtn} className="signup-link">
             {/* 로그인이 되었다면 회원가입에 접근할 수 없도록 링크를 없애버림 */}
             {token ? (
               ''
             ) : (
               <Link
                 to="/sign-up"
-                style={{ textDecoration: 'none', color: 'black' }}
+                className="signup-link"
+                style={{ textDecoration: 'none' }}
               >
                 회원가입
               </Link>

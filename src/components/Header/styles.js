@@ -50,6 +50,8 @@ export const Menu = styled.ul`
 export const MenuItem = styled.li`
   list-style: none;
   margin: 10px;
-  @media screen and (min-width: 414px) {
+  > a {
+    color: ${(props) =>
+      props.className === props.activeBtn ? 'blue' : 'black'};
   }
 `;
