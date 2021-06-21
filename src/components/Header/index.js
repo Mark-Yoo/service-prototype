@@ -1,23 +1,99 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Header, Logo, Menu, MenuItem, MenuToggle } from './styles';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteTokenSignOut } from '../../modules/postInfo';
+import { deleteOrderItem } from '../../modules/getOrder';
 
 const CommonHeader = () => {
-  const onClickSpreadMenu = useCallback(() => {}, []);
+  const [showMenu, setShowMenu] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
+  const { token } = useSelector((state) => state.postInfo);
+  const dispatch = useDispatch();
+
+  // 햄버거 메뉴 클릭시 메뉴 확장
+  const onClickSpreadMenu = useCallback(() => {
+    if (showMenu) setShowMenu(false);
+    else setShowMenu(true);
+  }, [showMenu]);
+
+  // 해상도가 414px보다 높을 때에는 메뉴를 클릭해도 메뉴화면이 커지는 것을 막기 위해 기능 분리
+  const onClickCollapseMenuByWidth = useCallback(() => {
+    if (showMenu && screenWidth < 414) setShowMenu(false);
+  }, [showMenu, screenWidth]);
+
+  const onClickSignOut = useCallback(() => {
+    dispatch(deleteTokenSignOut());
+    dispatch(deleteOrderItem());
+  }, [dispatch]);
+
+  const onClickCheckToken = useCallback(() => {
+    if (!token) alert('로그인해주세요');
+  }, [token]);
+
+  // 메뉴창이 켜진 상태에서 브라우저의 크기를 넓힐경우 해당 메뉴를 다시 보이지 않게 만들기 위한 로직
+  const getScreenWidth = useCallback(() => {
+    setScreenWidth(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', getScreenWidth);
+    return () => {
+      window.removeEventListener('resize', getScreenWidth);
+    };
+  }, [getScreenWidth]);
+
+  useEffect(() => {
+    if (screenWidth > 414) setShowMenu(false);
+  }, [screenWidth]);
 
   return (
     <>
-      <Header>
-        <Logo />
-        <Menu>
+      <Header showMenu={showMenu} screenWidth={screenWidth}>
+        <Link to="/">
+          <Logo />
+        </Link>
+        <Menu showMenu={showMenu} onClick={onClickCollapseMenuByWidth}>
           <MenuItem>
-            <Link to="/">서비스</Link>
+            <Link
+              to="/mypage/order"
+              onClick={onClickCheckToken}
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              마이페이지
+            </Link>
           </MenuItem>
           <MenuItem>
-            <Link to="/login">로그인</Link>
+            {/* 토큰을 받아왔을 경우 로그아웃으로 변경 */}
+            {token ? (
+              <Link
+                to="/logout"
+                onClick={onClickSignOut}
+                style={{ textDecoration: 'none', color: 'black' }}
+              >
+                로그아웃
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                style={{ textDecoration: 'none', color: 'black' }}
+              >
+                로그인
+              </Link>
+            )}
           </MenuItem>
           <MenuItem>
-            <Link to="/sign-up">회원가입</Link>
+            {/* 로그인이 되었다면 회원가입에 접근할 수 없도록 링크를 없애버림 */}
+            {token ? (
+              ''
+            ) : (
+              <Link
+                to="/sign-up"
+                style={{ textDecoration: 'none', color: 'black' }}
+              >
+                회원가입
+              </Link>
+            )}
           </MenuItem>
         </Menu>
         <MenuToggle onClick={onClickSpreadMenu} />

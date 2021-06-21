@@ -3,16 +3,25 @@ import styled from 'styled-components';
 export const ItemCard = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  width: 100%;
 `;
 
 export const ItemImg = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 60%;
+  height: 400px;
+  margin: 0 auto;
   background-color: lime;
+  @media screen and (max-width: 700px) {
+    width: 80%;
+    height: 300px;
+  }
 `;
 
 export const ItemOrderBtn = styled.button`
-  width: 200px;
+  width: 60%;
   height: 50px;
+  margin: 0 auto;
+  @media screen and (max-width: 700px) {
+    width: 80%;
+  }
 `;
