@@ -10,7 +10,7 @@ export const ItemWrapper = styled.div`
 `;
 
 export const Item = styled.div`
-  width: 500px;
+  width: 50%;
   height: 100px;
   margin: 10px auto;
   display: flex;
@@ -27,6 +27,5 @@ export const PageBtnWrapper = styled.div`
 export const PageBtn = styled.button`
   width: 50px;
   height: 50px;
-  color: blue;
   margin: 10px;
 `;

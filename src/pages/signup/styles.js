@@ -15,23 +15,30 @@ export const SignupForm = styled.form`
 `;
 
 export const InputWrapper = styled.div`
-  width: 40%;
+  width: 60%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const Label = styled.label`
   width: 30%;
   height: 20px;
+  @media screen and (min-width: 414px) {
+    width: 40%;
+  }
 `;
 
 export const Input = styled.input`
   width: 70%;
   height: 20px;
-  border: 2px solid black;
+  border: 1px solid black;
   ${(props) => props.emailError && `border: 3px solid red`};
   ${(props) => props.passwordError && `border: 3px solid red`};
+  @media screen and (min-width: 414px) {
+    width: 60%;
+  }
 `;
 
 export const SubmitButton = styled.button`

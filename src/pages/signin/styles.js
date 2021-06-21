@@ -18,12 +18,18 @@ export const LoginInputLabel = styled.label`
   width: 30%;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 500px) {
+    width: 50%;
+  }
 `;
 
 export const LoginInput = styled.input`
   width: 70%;
   height: 30px;
   border: 1px solid black;
+  @media screen and (max-width: 700px) {
+    width: 50%;
+  }
 `;
 
 export const BtnWrapper = styled.div`
