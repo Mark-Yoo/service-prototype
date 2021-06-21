@@ -4,6 +4,7 @@ import { signUp, signIn } from '../lib/api';
 const initialState = {
   loading: {
     GET_USER: false,
+    DELETE_USER: false,
   },
   token: null,
   statusCode: null,
@@ -17,9 +18,9 @@ const SIGN_IN_INFO = 'postInfo/SIGN_IN_INFO';
 const SIGN_IN_INFO_SUCCESS = 'postInfo/SIGN_IN_INFO_SUCCESS';
 const SIGN_IN_INFO_FAILURE = 'postInfo/SIGN_IN_INFO_FAILURE';
 
-// const SIGN_OUT_INFO = 'postInfo/SIGN_OUT_INFO';
-// const SIGN_OUT_INFO_SUCCESS = 'postInfo/SIGN_OUT_INFO_SUCCESS';
-// const SIGN_OUT_INFO_FAILURE = 'postInfo/SIGN_OUT_INFO_FAILURE';
+const SIGN_OUT_INFO = 'postInfo/SIGN_OUT_INFO';
+const SIGN_OUT_INFO_SUCCESS = 'postInfo/SIGN_OUT_INFO_SUCCESS';
+const SIGN_OUT_INFO_FAILURE = 'postInfo/SIGN_OUT_INFO_FAILURE';
 
 export const getTokenSignUp = (payload) => async (dispatch) => {
   dispatch({ type: SIGN_UP_INFO });
@@ -50,6 +51,22 @@ export const getTokenSignIn = (payload) => async (dispatch) => {
   } catch (e) {
     dispatch({
       type: SIGN_IN_INFO_FAILURE,
+      payload: e.response,
+      error: true,
+    });
+    throw e;
+  }
+};
+
+export const deleteTokenSignOut = () => async (dispatch) => {
+  dispatch({ type: SIGN_OUT_INFO });
+  try {
+    dispatch({
+      type: SIGN_OUT_INFO_SUCCESS,
+    });
+  } catch (e) {
+    dispatch({
+      type: SIGN_OUT_INFO_FAILURE,
       payload: e,
       error: true,
     });
@@ -103,7 +120,29 @@ const postInfo = handleActions(
         ...state.loading,
         GET_USER: false,
       },
-      statusCode: action.payload.message.includes(401) && 401,
+      statusCode: action.payload.status,
+    }),
+    [SIGN_OUT_INFO]: (state) => ({
+      ...state,
+      loading: {
+        ...state.loading,
+        DELETE_USER: true,
+      },
+    }),
+    [SIGN_OUT_INFO_SUCCESS]: (state) => ({
+      ...state,
+      loading: {
+        ...state.loading,
+        DELETE_USER: false,
+      },
+      token: null,
+    }),
+    [SIGN_OUT_INFO_FAILURE]: (state) => ({
+      ...state,
+      loading: {
+        ...state.loading,
+        DELETE_USER: false,
+      },
     }),
   },
   initialState,
