@@ -6,7 +6,7 @@ import {
   BtnWrapper,
   LoginInputLabel,
 } from './styles';
-import { FormWrapper, InputWrapper } from '../SignUp/styles';
+import { FormWrapper, InputWrapper } from '../Signup/styles';
 import { useInput } from '../../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTokenSignIn } from '../../modules/postInfo';

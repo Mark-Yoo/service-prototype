@@ -1,12 +1,12 @@
 import './App.css';
 import { Redirect, Route } from 'react-router-dom';
-import CommonHeader from './components/Header';
-import ServicePage from './pages/ServicePage';
-import SignUp from './pages/SignUp';
+import CommonHeader from './components/Header/index';
+import ServicePage from './pages/Servicepage/index';
+import SignUp from './pages/Signup/index';
 import { useSelector } from 'react-redux';
-import SignIn from './pages/SignIn';
-import Mypage from './pages/Mypage';
-import MypageDetail from './pages/MypageDetail';
+import SignIn from './pages/Signin/index';
+import Mypage from './pages/Mypage/index';
+import MypageDetail from './pages/MypageDetail/index';
 
 function App() {
   const { token } = useSelector((state) => state.postInfo);
